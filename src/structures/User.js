@@ -5,7 +5,7 @@ const { AtCoderStructure } = require("./AtCoderStructure");
 const { UserStatisticsDataManager } = require("../managers/UserStatisticsDataManager");
 const { Routes } = require("../session/Addresses");
 
-const { UserAcceptedCount, UserRatedPointSum, UserLongestStreakCount } = require("./UserStatisticsCounters");
+const { UserAcceptedCount, UserRatedPointSum, UserLongestStreakCount } = require("./userStatisticsCounters");
 const { UserStatus } = require("./UserStatus");
 
 class User extends AtCoderStructure {
