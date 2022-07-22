@@ -6,4 +6,4 @@ module.exports = {
   ...require("./Events"),
 };
 
-require("../../../utils/ColorableConsole");
+require("./ColorableConsole");
