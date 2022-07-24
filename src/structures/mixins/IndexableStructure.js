@@ -3,8 +3,8 @@
 const { Mixin } = require("mixwith");
 
 const IndexableStructure = Mixin(
-  (superclass) =>
-    class extends superclass {
+  (Base) =>
+    class extends Base {
       _makeAssigner(data) {
         return (properties, wrapt, init) => {
           let target, source;
@@ -22,6 +22,7 @@ const IndexableStructure = Mixin(
           }
         };
       }
+
       valueOf() {
         return this.id;
       }

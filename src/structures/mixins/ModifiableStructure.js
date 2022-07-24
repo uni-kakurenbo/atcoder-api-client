@@ -3,8 +3,8 @@
 const { Mixin } = require("mixwith");
 
 const ModifiableStructure = Mixin(
-  (superclass) =>
-    class extends superclass {
+  (Base) =>
+    class extends Base {
       _clone() {
         return Object.assign(Object.create(this), this);
       }
