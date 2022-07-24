@@ -1,8 +1,6 @@
 "use strict";
 
-const { register } = require("./ErrorHandler");
-
-const Messages = {
+const ErrorMessages = {
   CLIENT_INVALID_OPTION: (prop, must) => `The ${prop} option must be ${must}`,
 
   USERNAME_INVALID: "An invalid username was provided.",
@@ -27,6 +25,4 @@ const Messages = {
   ARG_MISSING: (name) => `Missing argument: ${name}`,
 };
 
-for (const [name, message] of Object.entries(Messages)) register(name, message);
-
-module.exports = { Messages };
+module.exports = { ErrorMessages };
