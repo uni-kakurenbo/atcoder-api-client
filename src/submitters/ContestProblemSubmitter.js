@@ -8,7 +8,7 @@ class ContestProblemSubmitter extends ContestSubmitter {
 
     this.problem = problem;
   }
-  async submit(...options) {
+  async post(...options) {
     return super.submit(this.problem.id, ...options);
   }
 }
