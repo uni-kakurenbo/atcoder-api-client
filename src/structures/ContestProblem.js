@@ -35,7 +35,7 @@ class ContestProblem extends AtCoderStructure {
   }
 
   async submit(...options) {
-    return this.submitter.submit(...options);
+    return this.submitter.post(...options);
   }
 
   get url() {

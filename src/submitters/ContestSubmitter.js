@@ -1,8 +1,5 @@
 "use strict";
 
-const { Cache } = require("../Cache");
-const { ContestLanguageInformationManager } = require("../managers/ContestLanguageInformationManager");
-const { ContestSubmissionFormScraper } = require("../scrapers/ContestSubmissionFormScraper");
 const { Routes } = require("../session/Addresses");
 const { BaseSubmitter } = require("./BaseSubmitter");
 
@@ -13,14 +10,17 @@ class ContestSubmitter extends BaseSubmitter {
     this.contest = contest;
   }
 
-  async submit(problemId, languageIdOrName, source = "") {
+  async post(problemId, languageIdOrName, sourceCode = "") {
     await this.contest.languages.fetchList();
+
     const language = this.contest.languages.resolver.resolve(languageIdOrName);
     const data = new URLSearchParams();
+
     data.append("data.TaskScreenName", problemId);
     data.append("data.LanguageId", language.id);
-    data.append("sourceCode", source);
+    data.append("sourceCode", sourceCode);
     data.append("csrf_token", this.client.session.token);
+
     return this.client.adapter.post(Routes.Web.submit(this.contest.id), data);
   }
 }

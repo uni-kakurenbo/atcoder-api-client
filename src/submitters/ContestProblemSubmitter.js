@@ -1,15 +1,16 @@
 "use strict";
 
-const { ContestSubmitter } = require("./ContestSubmitter");
+const { BaseSubmitter } = require("./BaseSubmitter");
 
-class ContestProblemSubmitter extends ContestSubmitter {
+class ContestProblemSubmitter extends BaseSubmitter {
   constructor(problem) {
-    super(problem.contest);
+    super(problem.client);
 
     this.problem = problem;
   }
+
   async post(...options) {
-    return super.submit(this.problem.id, ...options);
+    return this.problem.contest.submitter.post(this.problem.id, ...options);
   }
 }
 
