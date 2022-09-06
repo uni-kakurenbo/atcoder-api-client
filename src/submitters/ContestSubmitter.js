@@ -13,6 +13,8 @@ class ContestSubmitter extends BaseSubmitter {
   async post(problemId, languageIdOrName, sourceCode = "") {
     await this.contest.languages.fetchList();
 
+    if(!isNaN(+languageIdOrName)) languageIdOrName = +languageIdOrName;
+
     const language = this.contest.languages.resolver.resolve(languageIdOrName);
     const data = new URLSearchParams();
 

@@ -25,7 +25,10 @@ class ContestSubmissionFormScraper extends CachedDataScraper {
       .querySelectorAll("option")
       .forEach((data) => {
         if (data.value) {
-          const name = data.textContent.split(" ")[0];
+          let name = data.textContent.split(" ")[0];
+          if(data.textContent.includes("GCC")) name += ".GCC"
+          if(data.textContent.includes("Clang")) name += ".Clang"
+
           languages.push({
             id: data.value,
             name,

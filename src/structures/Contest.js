@@ -37,6 +37,10 @@ class Contest extends AtCoderStructure {
     return this.client.contests.fetch(this.id, { force });
   }
 
+  async submit(...options) {
+    return this.submitter.post(...options);
+  }
+
   get url() {
     return Routes.Web.contest(this.id);
   }
