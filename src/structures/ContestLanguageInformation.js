@@ -17,7 +17,9 @@ class ContestLanguageInformation extends AtCoderStructure {
     const assign = this._makeAssigner(data);
 
     assign("name");
-    assign("description");
+    assign("mime");
+    assign("code");
+    assign("label");
 
     return this;
   }

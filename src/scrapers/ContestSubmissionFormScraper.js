@@ -22,20 +22,22 @@ class ContestSubmissionFormScraper extends CachedDataScraper {
 
     const languages = [];
     document
-      .querySelector("#select-lang > div")
+      .querySelector("#select-lang select")
       .querySelectorAll("option")
       .forEach((data) => {
-        if (data.value) {
-          let name = data.textContent.split(" ")[0];
-          if(data.textContent.includes("GCC")) name += ".GCC"
-          if(data.textContent.includes("Clang")) name += ".Clang"
+        if (!data?.value) return;
 
-          languages.push({
-            id: data.value,
-            name,
-            description: data.textContent,
-          });
-        }
+        let name = data.label.split(" ")[0];
+        if (data.label.includes("GCC")) name += ".GCC";
+        if (data.label.includes("Clang")) name += ".Clang";
+
+        languages.push({
+          id: data.value,
+          mime: data.dataset.mime,
+          code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
+          name,
+          label: data.label,
+        });
       });
     return languages;
   }

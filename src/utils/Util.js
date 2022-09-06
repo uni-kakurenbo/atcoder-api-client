@@ -53,6 +53,19 @@ class Util extends null {
   static convertRatingToColorCode(rating) {
     return this.colors[this.convertRatingToColorName(rating)];
   }
+
+  static extractLanguageHints(sourceCode) {
+    const LANGUAGE_HINT_DETECTION_REG_EXP = /#.*lang(?:uage)?:?(?<args>\s+[^\n\r*/#]+)/;
+
+    const languageInformation = sourceCode?.match(LANGUAGE_HINT_DETECTION_REG_EXP);
+    if (!languageInformation || !languageInformation?.groups?.args) return;
+
+    return Util.splitLanguageHintStringIntoFilterQueries(languageInformation.groups.args);
+  }
+
+  static splitLanguageHintStringIntoFilterQueries(hint) {
+    return hint?.trim().replace(/\s+/g, " ").split(" ");
+  }
 }
 
 module.exports = { Util };

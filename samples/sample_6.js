@@ -8,7 +8,9 @@ client.on("ready", async () => {
 
   const IROHA_CONTEST = await client.contests.fetch("iroha2019-day3");
 
-  const languageHints = await IROHA_CONTEST.languages.detectLanguageHints("/* #language C++ GCC */");
+  const languageHints = await IROHA_CONTEST.languages.filterBySelectors(
+    Util.extractLanguageHints("/* #language C++ GCC */")
+  );
   console.log(languageHints);
 });
 
