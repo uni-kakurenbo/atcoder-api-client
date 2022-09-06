@@ -12,6 +12,7 @@ class ContestSubmissionFormScraper extends CachedDataScraper {
 
     this.languages = languages;
   }
+
   async load(options) {
     const url = Routes.Web.submit(this.languages.contest.id);
     const response = await this._fetch(url, options);
