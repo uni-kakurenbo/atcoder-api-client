@@ -3,8 +3,8 @@
 const { AtCoderStructure } = require("./AtCoderStructure");
 
 class ContestLanguageInformation extends AtCoderStructure {
-  constructor(contest, data) {
-    super(contest.client);
+  constructor(client, data, contest) {
+    super(client);
 
     this.id = data.id;
 
