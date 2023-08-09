@@ -27,15 +27,11 @@ class ContestSubmissionFormScraper extends CachedDataScraper {
       .forEach((data) => {
         if (!data?.value) return;
 
-        let name = data.label.split(" ")[0];
-        if (data.label.includes("GCC")) name += ".GCC";
-        if (data.label.includes("Clang")) name += ".Clang";
-
         languages.push({
           id: data.value,
           mime: data.dataset.mime,
           code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
-          name,
+          name: data.label,
           label: data.label,
         });
       });

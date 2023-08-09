@@ -17,7 +17,7 @@ class ContestLanguageInformationManager extends CachedManager {
   async fetchList({ cache = true, force = false } = {}) {
     const languages = await this.scraper.load({ cache, force });
     languages.forEach((language) => {
-      this._add(language, cache, { id: language.id, extras: [this.contest] });
+      this._add(language, cache, { extras: [this.contest] });
     });
   }
 
