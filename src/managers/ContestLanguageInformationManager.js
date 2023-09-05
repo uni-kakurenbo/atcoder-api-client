@@ -29,7 +29,7 @@ class ContestLanguageInformationManager extends CachedManager {
     const selectedOptions = this.cache.filter((item) => {
       return (
         languageSelectors.includes(item.id) ||
-        languageSelectors.every((selector) => item.code.toLowerCase().includes(selector)) ||
+        // languageSelectors.every((selector) => item.code.toLowerCase().includes(selector)) ||
         languageSelectors.every((selector) => item.label.toLowerCase().includes(selector))
       );
     });

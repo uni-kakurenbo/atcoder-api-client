@@ -4,7 +4,6 @@ const { CachedDataScraper } = require("./CachedScraper");
 
 const { JSDOM } = require("jsdom");
 const { Routes } = require("../session/Addresses");
-const { Cache } = require("../Cache");
 
 class ContestSubmissionFormScraper extends CachedDataScraper {
   constructor(languages) {
@@ -28,11 +27,12 @@ class ContestSubmissionFormScraper extends CachedDataScraper {
         if (!data?.value) return;
 
         languages.push({
-          id: data.value,
-          mime: data.dataset.mime,
-          code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
-          name: data.label,
-          label: data.label,
+            id: data.value,
+            // mime: data.dataset.mime,
+            // code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
+            code: data["data-ace-mode"],
+            name: data.label,
+            label: data.label,
         });
       });
     return languages;
