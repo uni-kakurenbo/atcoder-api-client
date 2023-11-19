@@ -1,1 +1,1 @@
-# AtCoder-Helper API-Wrapper
+# AtCoder API-Wrapper for Node.js
