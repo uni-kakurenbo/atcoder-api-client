@@ -6,37 +6,37 @@ const { JSDOM } = require("jsdom");
 const { Routes } = require("../session/Addresses");
 
 class ContestSubmissionFormScraper extends CachedDataScraper {
-  constructor(languages) {
-    super(languages.client);
+    constructor(languages) {
+        super(languages.client);
 
-    this.languages = languages;
-  }
+        this.languages = languages;
+    }
 
-  async load(options) {
-    const url = Routes.Web.submit(this.languages.contest.id);
-    const response = await this._fetch(url, options);
-    const {
-      window: { document },
-    } = new JSDOM(response);
+    async load(options) {
+        const url = Routes.Web.submit(this.languages.contest.id);
+        const response = await this._fetch(url, options);
+        const {
+            window: { document },
+        } = new JSDOM(response);
 
-    const languages = [];
-    document
-      .querySelector("#select-lang select")
-      .querySelectorAll("option")
-      .forEach((data) => {
-        if (!data?.value) return;
+        const languages = [];
+        document
+            .querySelector("#select-lang select")
+            .querySelectorAll("option")
+            .forEach((data) => {
+                if (!data?.value) return;
 
-        languages.push({
-            id: data.value,
-            // mime: data.dataset.mime,
-            // code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
-            code: data["data-ace-mode"],
-            name: data.label,
-            label: data.label,
-        });
-      });
-    return languages;
-  }
+                languages.push({
+                    id: data.value,
+                    // mime: data.dataset.mime,
+                    // code: data.dataset.mime.toLowerCase().replaceAll(/^.+\/x?|src$/g, "") ?? "",
+                    code: data["data-ace-mode"],
+                    name: data.label,
+                    label: data.label,
+                });
+            });
+        return languages;
+    }
 }
 
 module.exports = { ContestSubmissionFormScraper };

@@ -3,30 +3,30 @@
 const { Mixin } = require("mixwith");
 
 const IndexableStructure = Mixin(
-  (Base) =>
-    class extends Base {
-      _makeAssigner(data) {
-        return (properties, wrapt, init) => {
-          let target, source;
-          if (Array.isArray(properties)) {
-            [target, source = target] = properties;
-          } else {
-            target = source = properties;
-          }
-          wrapt ??= data[source];
+    (Base) =>
+        class extends Base {
+            _makeAssigner(data) {
+                return (properties, wrapt, init) => {
+                    let target, source;
+                    if (Array.isArray(properties)) {
+                        [target, source = target] = properties;
+                    } else {
+                        target = source = properties;
+                    }
+                    wrapt ??= data[source];
 
-          if (source in data) {
-            this[target] = wrapt;
-          } else if (init !== void 0) {
-            this[target] = init;
-          }
-        };
-      }
+                    if (source in data) {
+                        this[target] = wrapt;
+                    } else if (init !== void 0) {
+                        this[target] = init;
+                    }
+                };
+            }
 
-      valueOf() {
-        return this.id;
-      }
-    }
+            valueOf() {
+                return this.id;
+            }
+        }
 );
 
 module.exports = { IndexableStructure };

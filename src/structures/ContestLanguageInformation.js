@@ -3,26 +3,26 @@
 const { AtCoderStructure } = require("./AtCoderStructure");
 
 class ContestLanguageInformation extends AtCoderStructure {
-  constructor(client, data, contest) {
-    super(client);
+    constructor(client, data, contest) {
+        super(client);
 
-    this.id = data.id;
+        this.id = data.id;
 
-    this.contest = contest;
+        this.contest = contest;
 
-    this._patch(data);
-  }
+        this._patch(data);
+    }
 
-  _patch(data) {
-    const assign = this._makeAssigner(data);
+    _patch(data) {
+        const assign = this._makeAssigner(data);
 
-    assign("name");
-    // assign("mime");
-    // assign("code");
-    assign("label");
+        assign("name");
+        // assign("mime");
+        // assign("code");
+        assign("label");
 
-    return this;
-  }
+        return this;
+    }
 }
 
 module.exports = { ContestLanguageInformation };

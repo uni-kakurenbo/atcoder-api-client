@@ -12,85 +12,85 @@ const { UserManager } = require("../managers/UserManager");
 const { ContestManager } = require("../managers/ContestManager");
 
 class Client extends BaseClient {
-  constructor(options) {
-    super(options);
+    constructor(options) {
+        super(options);
 
-    this._validateOptions();
+        this._validateOptions();
 
-    Object.defineProperties(this, {
-      username: { writable: true },
-      password: { writable: true },
-    });
+        Object.defineProperties(this, {
+            username: { writable: true },
+            password: { writable: true },
+        });
 
-    if (!this.username && "ATCODER_USERNAME" in process.env) {
-      this.username = process.env.ATCODER_USERNAME;
-    } else {
-      this.username = null;
+        if (!this.username && "ATCODER_USERNAME" in process.env) {
+            this.username = process.env.ATCODER_USERNAME;
+        } else {
+            this.username = null;
+        }
+        if (!this.password && "ATCODER_PASSWORD" in process.env) {
+            this.password = process.env.ATCODER_PASSWORD;
+        } else {
+            this.password = null;
+        }
+
+        this.user = null;
+        this.readyTimestamp = null;
+
+        this.users = new UserManager(this);
+        this.contests = new ContestManager(this);
     }
-    if (!this.password && "ATCODER_PASSWORD" in process.env) {
-      this.password = process.env.ATCODER_PASSWORD;
-    } else {
-      this.password = null;
+
+    get readyAt() {
+        return this.readyTimestamp && new Date(this.readyTimestamp);
     }
 
-    this.user = null;
-    this.readyTimestamp = null;
+    get uptime() {
+        return this.readyTimestamp && Date.now() - this.readyTimestamp;
+    }
 
-    this.users = new UserManager(this);
-    this.contests = new ContestManager(this);
-  }
+    async login(username = this.username, password = this.password, { force } = {}) {
+        if (!username || typeof username !== "string") throw new Error("USERNAME_INVALID");
+        await this.session.connect(username, password, { force });
+        await this.fetchUserStatus(username);
 
-  get readyAt() {
-    return this.readyTimestamp && new Date(this.readyTimestamp);
-  }
+        this.user = new ClientUser(this, username, {
+            status: await this.fetchUserStatus(username),
+        });
 
-  get uptime() {
-    return this.readyTimestamp && Date.now() - this.readyTimestamp;
-  }
+        this.username = username;
 
-  async login(username = this.username, password = this.password, { force } = {}) {
-    if (!username || typeof username !== "string") throw new Error("USERNAME_INVALID");
-    await this.session.connect(username, password, { force });
-    await this.fetchUserStatus(username);
+        this.readyTimestamp = Date.now();
 
-    this.user = new ClientUser(this, username, {
-      status: await this.fetchUserStatus(username),
-    });
+        this.emit(Events.READY, this.username);
+        return this.user;
+    }
 
-    this.username = username;
+    async fetchUserStatus(username) {
+        const userHistoryURL = Routes.API.Official.userHistory(username);
+        const userAlgorithmHistoryResponse = await this.adapter.get(userHistoryURL);
+        const userHeuristicHistoryResponse = await this.adapter.get(userHistoryURL, {
+            params: { contestType: "heuristic" },
+        });
 
-    this.readyTimestamp = Date.now();
+        return {
+            algorithm: { history: userAlgorithmHistoryResponse.data },
+            heuristic: { history: userHeuristicHistoryResponse.data },
+        };
+    }
 
-    this.emit(Events.READY, this.username);
-    return this.user;
-  }
+    isReady() {
+        // eslint-disable-next-line no-undef
+        return this.session.status === Status.READY;
+    }
 
-  async fetchUserStatus(username) {
-    const userHistoryURL = Routes.API.Official.userHistory(username);
-    const userAlgorithmHistoryResponse = await this.adapter.get(userHistoryURL);
-    const userHeuristicHistoryResponse = await this.adapter.get(userHistoryURL, {
-      params: { contestType: "heuristic" },
-    });
+    async destroy() {
+        await super.destroy();
+        this.username = this.password = null;
+        this.emit(Events.DESTROYED);
+    }
 
-    return {
-      algorithm: { history: userAlgorithmHistoryResponse.data },
-      heuristic: { history: userHeuristicHistoryResponse.data },
-    };
-  }
-
-  isReady() {
-    // eslint-disable-next-line no-undef
-    return this.session.status === Status.READY;
-  }
-
-  async destroy() {
-    await super.destroy();
-    this.username = this.password = null;
-    this.emit(Events.DESTROYED);
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  _validateOptions(options = this.options) {}
+    // eslint-disable-next-line no-unused-vars
+    _validateOptions(options = this.options) {}
 }
 
 module.exports = { Client };

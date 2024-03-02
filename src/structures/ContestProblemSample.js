@@ -3,32 +3,32 @@
 const { AtCoderStructure } = require("./AtCoderStructure");
 
 class ContestProblemSample extends AtCoderStructure {
-  constructor(client, data, problem) {
-    super(client);
+    constructor(client, data, problem) {
+        super(client);
 
-    this.id = data.id;
+        this.id = data.id;
 
-    this.problem = problem;
+        this.problem = problem;
 
-    this._patch(data);
-  }
+        this._patch(data);
+    }
 
-  _patch(data) {
-    const assign = this._makeAssigner(data);
+    _patch(data) {
+        const assign = this._makeAssigner(data);
 
-    assign("in");
-    assign("out");
+        assign("in");
+        assign("out");
 
-    return this;
-  }
+        return this;
+    }
 
-  fetch(force = true) {
-    return this.problems.samples.fetch(this.id, { force });
-  }
+    fetch(force = true) {
+        return this.problems.samples.fetch(this.id, { force });
+    }
 
-  test(answer = "\n") {
-    return answer.replace(/\s+/g, "\n") === this.out.replace(/\s+/g, "\n");
-  }
+    test(answer = "\n") {
+        return answer.replace(/\s+/g, "\n") === this.out.replace(/\s+/g, "\n");
+    }
 }
 
 module.exports = { ContestProblemSample };

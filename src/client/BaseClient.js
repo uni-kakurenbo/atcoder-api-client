@@ -7,21 +7,21 @@ const { Util, DefaultOptions } = require("../utils");
 const { Session } = require("../session/Session");
 
 class BaseClient extends EventEmitter {
-  constructor(options = {}) {
-    super({ captureRejections: true });
+    constructor(options = {}) {
+        super({ captureRejections: true });
 
-    if (typeof options !== "object" || options === null) {
-      throw new TypeError("INVALID_TYPE", "options", "object", true);
+        if (typeof options !== "object" || options === null) {
+            throw new TypeError("INVALID_TYPE", "options", "object", true);
+        }
+
+        this.options = Util.mergeDefault(DefaultOptions.Client, options);
+
+        this.session = new Session(this);
+        this.adapter = this.session.adapter;
     }
-
-    this.options = Util.mergeDefault(DefaultOptions.Client, options);
-
-    this.session = new Session(this);
-    this.adapter = this.session.adapter;
-  }
-  async destroy() {
-    return this.session.destroy();
-  }
+    async destroy() {
+        return this.session.destroy();
+    }
 }
 
 module.exports = { BaseClient };

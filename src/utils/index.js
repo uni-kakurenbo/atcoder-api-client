@@ -1,9 +1,9 @@
 "use strict";
 
 module.exports = {
-  ...require("./Util"),
-  ...require("./DefaultOptions"),
-  ...require("./Events"),
+    ...require("./Util"),
+    ...require("./DefaultOptions"),
+    ...require("./Events"),
 };
 
 require("./ColorableConsole");
