@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@discordjs/collection": "^0.5.0",
-    "axios": "^0.26.0",
+    "axios": "^1.8.1",
     "dotenv": "^16.0.0",
     "jsdom": "^19.0.0",
     "mixwith": "^0.1.1"
